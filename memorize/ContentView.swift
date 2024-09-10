@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    var CardDetails: [(isFaceUp:Bool,emoji:String)] = [(false,"🎃"),(false,"👻"),(false,"👻"),(false,"🎃")]
+    var CardDetails: [(isFaceUp:Bool,emoji:String)] = [(true,"🎃"),(false,"👻"),(true,"👻"),(false,"🎃")]
     var body: some View {
         HStack {
             ForEach(CardDetails.indices, id: \.self) {
@@ -21,24 +21,23 @@ struct ContentView: View {
 }
 
 struct Cardview: View {
-    var isFaceUp: Bool
-    var emoji: String
-    
-    init(isFaceUp: Bool = false, emoji: String = "🎃") {
-        self.isFaceUp = isFaceUp
-        self.emoji = emoji
-    }
+    @State var isFaceUp: Bool = false
+    var emoji: String = "🎃"
     
     var body: some View {
-        if(isFaceUp) {
-            ZStack (content : {
-                RoundedRectangle(cornerRadius: 12).foregroundColor(.white)
-                RoundedRectangle(cornerRadius: 12).stroke()
+        ZStack{
+            let base = RoundedRectangle(cornerRadius: 12)
+            if(isFaceUp) {
+                
+                base.foregroundColor(.white)
+                base.stroke()
                 Text(emoji).font(.largeTitle)
-            })
-            
-        } else {
-            RoundedRectangle(cornerRadius: 12)
+                
+            } else {
+                base.fill()
+            }
+        }.onTapGesture {
+            isFaceUp.toggle()
         }
     }
 }
